@@ -18,6 +18,16 @@ Scenario: Consume the APIs in a Happy path scenario
     Then return {amount}*rate
 ```
 
+## Run 
+```
+./mvnw spring-boot:run
+```
+
+## Documentation
+```
+./mvnw site
+```
+
 ## References:
 
 https://cucumber.io/docs/gherkin/reference/

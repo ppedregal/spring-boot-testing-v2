@@ -187,12 +187,14 @@
                 </reportSets>
             </plugin>
 
-            <!-- Findbugs -->
+            <!-- Findbugs: disabled for java9+ -->
+            <!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>3.0.5</version>
             </plugin>
+            -->
 
             <!-- PMD -->
             <plugin>
