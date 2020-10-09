@@ -1,5 +1,10 @@
 # spring-boot-testing-v2
 
+## Build
+![Java CI](https://github.com/ppedregal/spring-boot-testing-v2/workflows/Java%20CI/badge.svg)
+
+## Problem
+
 ```gherkin
 Feature: EUR-USD Conversor using the best Rate 
 Background: The provider has an agreement with few REST API
