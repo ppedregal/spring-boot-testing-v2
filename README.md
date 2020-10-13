@@ -18,12 +18,34 @@ Scenario: Consume the APIs in a Happy path scenario
     Then return {amount}*rate
 ```
 
-## Run 
+## Solution
+RateProvider interface has exposes the logic for retrieving the best rate, two different 
+implementations are available: 
+* SequentialRateProvider: invokes all rate api services available one after the other
+* ParallelRateProvider: invokes all rate api services available at once
+Rest client with feign 
+Timeout with feign
+Retry with feign
+Circuit breaker with hystrix
+
+## Usage
+
+Run with sequential strategy
+```
+./mvnw spring-boot:run -Dspring-boot.run.profiles=sequential
+```
+or just
 ```
 ./mvnw spring-boot:run
 ```
 
-## Documentation
+Run with parallel strategy
+```
+./mvnw spring-boot:run -Dspring-boot.run.profiles=parallel
+```
+
+
+Reports
 ```
 ./mvnw site
 ```

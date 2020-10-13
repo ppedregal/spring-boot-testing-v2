@@ -1,23 +1,29 @@
 package demo;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.stream.Stream;
 
+import com.netflix.hystrix.HystrixCommand;
+
+import demo.api.RateClient;
 import lombok.AllArgsConstructor;
-import reactor.core.publisher.Mono;
 
 @AllArgsConstructor
 public class SequentialRateProvider implements RateProvider {
 
-    private RateApi[] apis;
+    private final RateClient[] apis;
 
     @Override
-    public Mono<BigDecimal> findRate(String source, String target) {
-
-        return Mono.just(Stream.of(apis)
-            .map(api->api.findRate(source, target).block())
+    public BigDecimal findRate(final String source, final String target) {
+        final RateFinder finder = new RateFinder(source, target);
+        return Stream.of(apis)
+            .map(RateClient::latest)
+            .map(HystrixCommand::execute)
+            .map(finder::findRate)
+            .filter(Objects::nonNull)
             .max(BigDecimal::compareTo)
-            .orElse(BigDecimal.ZERO));
+            .orElse(BigDecimal.ZERO);
     }
-    
+
 }

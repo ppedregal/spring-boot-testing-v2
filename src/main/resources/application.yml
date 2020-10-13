@@ -1,4 +1,21 @@
 logging:
   level: 
     root: INFO
-    org.springframework.web.reactive.function.client: DEBUG
+    demo: DEBUG
+    
+feign:
+  hystrix:    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+        
+hystrix:  dashboard:    proxy-stream-allow-list:    - "localhost"
+        
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

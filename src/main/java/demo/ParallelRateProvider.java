@@ -1,29 +1,50 @@
 package demo;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.netflix.hystrix.HystrixCommand;
+
+import demo.api.RateClient;
+import demo.api.RateClient.RateResponse;
 import lombok.AllArgsConstructor;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
+import rx.Observable;
 
 @AllArgsConstructor
 public class ParallelRateProvider implements RateProvider {
 
-    RateApi[] apis;
-    
+    private final RateClient[] apis;
+
     @Override
-    public Mono<BigDecimal> findRate(String source, String target) {
-        List<Mono<BigDecimal>> monos = Stream.of(apis).map(api->api.findRate(source, target)).collect(Collectors.toList());
-        return Flux.merge(monos)
-            .parallel(apis.length)
-            .runOn(Schedulers.elastic())
-            .collectSortedList(Collections.reverseOrder(BigDecimal::compareTo),apis.length)
-            .map(l->l.get(0));
+    public BigDecimal findRate(final String source, final String target) {
+        final RateFinder finder = new RateFinder(source, target);
+
+        Future<RateResponse> f = apis[0].latest().queue();
+
+//        Observable.zip
+        List<Observable<RateResponse>> observables = Stream.of(apis)
+            .map(RateClient::latest)
+            .map(HystrixCommand::toObservable)
+            .collect(Collectors.toList());
+
+//            .map(finder::findRate)
+//            .max(BigDecimal::compareTo)
+//            .orElse(BigDecimal.ZERO);
+
+        Observable<BigDecimal> obs = Observable.zip(observables, arr -> {
+            return Stream.of(arr)
+                    .map(item -> (RateResponse) item)
+                    .map(finder::findRate)
+                    .filter(Objects::nonNull)
+                    .max(BigDecimal::compareTo)
+                    .orElse(BigDecimal.ZERO);
+        });
+        return obs.toBlocking().first();
+
     }
 
 }
