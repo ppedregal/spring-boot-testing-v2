@@ -9,7 +9,7 @@ import com.netflix.hystrix.HystrixCommand;
 import demo.api.FrankfurterClient.FrankfurterClientFallback;
 
 @FeignClient(name = "frankfurter",
-    url = "https://api.frankfurter.app",
+    url = "${app.services.frankfurter}",
     fallback = FrankfurterClientFallback.class)
 public interface FrankfurterClient extends RateClient {
 

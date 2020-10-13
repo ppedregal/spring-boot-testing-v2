@@ -8,8 +8,8 @@ import com.netflix.hystrix.HystrixCommand;
 
 import demo.api.ExchangeratesapiClient.ExchangeratesapiClientFallback;
 
-@FeignClient(name = "exchangerates",
-    url = "https://api.exchangeratesapi.io",
+@FeignClient(name = "exchangeratesapi",
+    url = "${app.services.exchangeratesapi}",
     fallback = ExchangeratesapiClientFallback.class)
 public interface ExchangeratesapiClient extends RateClient {
 

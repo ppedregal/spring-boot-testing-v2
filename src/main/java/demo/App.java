@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,10 +38,15 @@ public class App {
     RateProvider rates;
 
     @GetMapping("/convert/{source}/{target}/{amount}")
-    public Number convert(@PathVariable("source") final String source,
+    public ResponseEntity<Number> convert(@PathVariable("source") final String source,
             @PathVariable("target") final String target,
             @PathVariable("amount") final Long amount) {
-        return rates.findRate(source, target).multiply(new BigDecimal(amount));
+        BigDecimal rate = rates.findRate(source, target);
+        if (rate != null) {
+            BigDecimal value = rate.multiply(new BigDecimal(amount));
+            return ResponseEntity.ok(value);
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }

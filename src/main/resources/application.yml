@@ -1,3 +1,9 @@
+app:
+  services:
+    exchangeratesapi: https://api.exchangeratesapi.io
+    frankfurter: https://api.frankfurter.app
+    ratesapi: https://api.ratesapi.io/api
+
 logging:
   level: 
     root: INFO

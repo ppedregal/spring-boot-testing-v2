@@ -23,7 +23,7 @@ public class SequentialRateProvider implements RateProvider {
             .map(finder::findRate)
             .filter(Objects::nonNull)
             .max(BigDecimal::compareTo)
-            .orElse(BigDecimal.ZERO);
+            .orElse(null);
     }
 
 }

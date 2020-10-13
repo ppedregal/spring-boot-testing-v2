@@ -9,7 +9,7 @@ import com.netflix.hystrix.HystrixCommand;
 import demo.api.RatesapiClient.RatesapiClientFallback;
 
 @FeignClient(name = "ratesapi",
-    url = "https://api.ratesapi.io/api",
+    url = "${app.services.ratesapi}",
     fallback = RatesapiClientFallback.class)
 public interface RatesapiClient extends RateClient {
 

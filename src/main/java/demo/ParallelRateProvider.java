@@ -3,7 +3,6 @@ package demo;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -21,19 +20,12 @@ public class ParallelRateProvider implements RateProvider {
 
     @Override
     public BigDecimal findRate(final String source, final String target) {
+        
         final RateFinder finder = new RateFinder(source, target);
-
-        Future<RateResponse> f = apis[0].latest().queue();
-
-//        Observable.zip
         List<Observable<RateResponse>> observables = Stream.of(apis)
             .map(RateClient::latest)
             .map(HystrixCommand::toObservable)
             .collect(Collectors.toList());
-
-//            .map(finder::findRate)
-//            .max(BigDecimal::compareTo)
-//            .orElse(BigDecimal.ZERO);
 
         Observable<BigDecimal> obs = Observable.zip(observables, arr -> {
             return Stream.of(arr)
@@ -41,7 +33,7 @@ public class ParallelRateProvider implements RateProvider {
                     .map(finder::findRate)
                     .filter(Objects::nonNull)
                     .max(BigDecimal::compareTo)
-                    .orElse(BigDecimal.ZERO);
+                    .orElse(null);
         });
         return obs.toBlocking().first();
 
