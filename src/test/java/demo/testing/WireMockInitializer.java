@@ -26,9 +26,9 @@ public class WireMockInitializer implements ApplicationContextInitializer<Config
         String serverUrl = "http://localhost:"+wireMockServer.port()+"/wiremock";
         
         new TestPropertyValuesBuilder()
-            .with("app.services.exchangeratesapi",serverUrl+"/exchangeratesapi")
-            .with("app.services.frankfurter",serverUrl+"/frankfurter")
-            .with("app.services.ratesapi",serverUrl+"/ratesapi")
+            .with("app.services.exchangeratesapi",serverUrl+"/exchangeratesapi/")
+            .with("app.services.frankfurter",serverUrl+"/frankfurter/")
+            .with("app.services.ratesapi",serverUrl+"/ratesapi/")
             .build()
             .applyTo(configurableApplicationContext);
         

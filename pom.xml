@@ -20,6 +20,8 @@
         <java.version>11</java.version>
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
         <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
+        <retrofit.version>2.9.0</retrofit.version>
+        <okhttp3.version>3.14.9</okhttp3.version>
     </properties>
 
     <dependencies>
@@ -39,18 +41,25 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
+        
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-netflix-ribbon</artifactId>
-                </exclusion>
-            </exclusions>
+          <groupId>com.squareup.retrofit2</groupId>
+          <artifactId>retrofit</artifactId>
+          <version>${retrofit.version}</version>
+        </dependency>        
+        
+        <dependency>
+          <groupId>com.squareup.retrofit2</groupId>
+          <artifactId>converter-jackson</artifactId>
+          <version>${retrofit.version}</version>
+        </dependency>        
+        
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>logging-interceptor</artifactId>
+            <version>${okhttp3.version}</version>
         </dependency>
-
+        
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
@@ -103,6 +112,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

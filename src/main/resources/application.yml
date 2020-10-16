@@ -1,23 +1,18 @@
 app:
   services:
-    exchangeratesapi: https://api.exchangeratesapi.io
-    frankfurter: https://api.frankfurter.app
-    ratesapi: https://api.ratesapi.io/api
+    exchangeratesapi: https://api.exchangeratesapi.io/
+    frankfurter: https://api.frankfurter.app/
+    ratesapi: https://api.ratesapi.io/
+  retrofit:
+    timeout: 5000
+    logging: BASIC
+    
 
 logging:
   level: 
     root: INFO
     demo: DEBUG
     
-feign:
-  hystrix:    enabled: true
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
-        
 hystrix:  dashboard:    proxy-stream-allow-list:    - "localhost"
         
 management:

@@ -1,10 +1,10 @@
-package demo;
+package demo.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Optional;
 
-import demo.api.RateClient.RateResponse;
+import demo.api.RateApi.RateResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -72,7 +72,7 @@ public class RateFinder {
                         .divide(sourceDto, NUM_DECIMALS, RoundingMode.HALF_UP);
             }
 
-            log.debug("{}-{}:{}", source, target, found);
+            log.debug("{}-{}: {}", source, target, found);
 
         }
         return found;
